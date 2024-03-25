@@ -21,11 +21,14 @@ function App() {
 
 
   const handlePhotoTaken = async (photoPath: string) => {
-    console.log('Photo taken:', photoPath);
     
-    await addDoc(collection(db, "analysis"), {
+    if(!user) {
+      return;
+    }
+    
+    await addDoc(collection(db, `analysis/${user.uid}/items`), {
       imagePath: photoPath,
-      uid: user?.uid,
+      uid: user.uid,
       timestamp: serverTimestamp()
     });
   }
@@ -36,10 +39,10 @@ function App() {
 
       <FirebaseLoginUI className="firLoginUi" />
       
-      <h1>🍽️Healthy Plate Checker🍽️</h1>
+      <h1>🍽️  Healthy Plate Checker 🍽️</h1>
       <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center',flexGrow: 1 }}>
-        <CameraCaptureModal
-          onPhotoTaken={handlePhotoTaken} />
+        {/* <CameraCaptureModal
+          onPhotoTaken={handlePhotoTaken} /> */}
         <FileUploadModal onPhotoTaken={handlePhotoTaken}/>
       </Box>
 

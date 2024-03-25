@@ -9,7 +9,7 @@ export interface PlateAnalysis {
         percentage: number
         recommended_percentage: number
     }[]
-    recommendation: string;
+    conclusion: string;
     meets_recommendation: boolean;
 }
 
