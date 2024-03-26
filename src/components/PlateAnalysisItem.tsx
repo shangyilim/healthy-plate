@@ -2,16 +2,19 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { AnalysisResult, PlateAnalysis } from '../types';
 import { getDownloadURL, getStorage, ref } from 'firebase/storage';
 import Typography from '@mui/material/Typography';
-import { Box, Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Chip, ChipOwnProps, Container, IconButton, LinearProgress, Paper, useTheme } from '@mui/material';
+import { Box, Button, Card, CardActionArea, CardActions, CardContent, CardMedia, IconButton, LinearProgress, Paper, useTheme } from '@mui/material';
 import NutritionChips from './NutritionChips';
+import CloseIcon from '@mui/icons-material/Close';
+
 
 const storage = getStorage();
 
 interface Prop {
   analysis: AnalysisResult;
   onClick: (item: PlateAnalysis, itemImgSrc: string) => void;
+  onDelete:(id: string)=> void;
 }
-const PlateAnalysisItem: React.FC<Prop> = ({ analysis, onClick }) => {
+const PlateAnalysisItem: React.FC<Prop> = ({ analysis, onClick, onDelete }) => {
 
 
   const [imageUrl, setImageUrl] = useState<string>();
@@ -48,6 +51,11 @@ const PlateAnalysisItem: React.FC<Prop> = ({ analysis, onClick }) => {
     }
     onClick(result, imageUrl);
   }
+
+  const handleItemDelete = () => {
+    onDelete(analysis.docId);
+  }
+
   useEffect(() => {
     downloadImage();
   }, [downloadImage])
@@ -64,12 +72,9 @@ const PlateAnalysisItem: React.FC<Prop> = ({ analysis, onClick }) => {
       },
       marginBottom: 1,
     }}>
-      <CardActionArea sx={{
-        display: {
-          xs: 'block',
-          sm: 'flex'
-        }
-      }} onClick={handleItemClick}>
+      
+
+      
         <CardMedia
           component="img"
           sx={{
@@ -80,30 +85,43 @@ const PlateAnalysisItem: React.FC<Prop> = ({ analysis, onClick }) => {
               lg: 280,
             }, height: {
               xs: 151,
-              sm: 200,
+              sm: 230,
             }
           }}
           image={imageUrl}
           alt={result?.meal ?? 'picture of meal'}
           loading="lazy"
         />
-        <Box sx={{ display: 'flex', flexDirection: 'column'  }}>
-          <CardContent sx={{ flex: '1 0 100%' }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1, position: 'relative' }}>  
+        <IconButton
+        aria-label="close"
+        onClick={handleItemDelete}
+        sx={{
+          position: 'absolute',
+          right: 8,
+          top: 8,
+          color: (theme) => theme.palette.grey[500],
+        }}
+      >
+        <CloseIcon />
+      </IconButton>
+          <CardContent sx={{ flex: '1 0 100%', paddingTop:5 }}>
+          
             {error && <Typography color="error" variant="h5" component="div">
               Error
             </Typography>}
 
             {completed && !processing && <>
-              <Typography component="div" variant="h5">
+              <Typography component="div" variant="h5" gutterBottom>
                 {result?.meal}
               </Typography>
-              <Typography variant="subtitle2" component="div" gutterBottom>
-                {result?.meets_recommendation ? '✅ Meets recommendation' : '❌ Does not meet recommendation'}
-              </Typography>
+              {result?.meets_recommendation  && typeof result.meets_recommendation === 'boolean' && <Typography variant="subtitle2" component="div" gutterBottom>
+                {result.meets_recommendation ? '✅ Meets recommendation' : '❌ Does not meet recommendation'}
+              </Typography>}
               <NutritionChips nutritionInfos={nutritionInfos} />
 
               <CardActions>
-                <Button size="small">Learn More</Button>
+                <Button size="small" onClick={handleItemClick}>Learn More</Button>
               </CardActions>
             </>
             }
@@ -113,7 +131,6 @@ const PlateAnalysisItem: React.FC<Prop> = ({ analysis, onClick }) => {
           </CardContent>
 
         </Box>
-      </CardActionArea>
     </Card>
 
   );

@@ -1,4 +1,4 @@
-import { collection, getFirestore, limit, onSnapshot, orderBy, query, where } from "firebase/firestore";
+import { collection, deleteDoc, doc, getFirestore, limit, onSnapshot, orderBy, query, where } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useFirebaseUser } from "../hooks";
 import PlateAnalysisItem from "./PlateAnalysisItem";
@@ -24,6 +24,14 @@ export const PlateAnalysisList = () => {
     setModalOpen(false);
     setSelectedItem(null);
   };
+
+  const deleteItem = async (docId: string)=> {
+    if (!user) {
+      return;
+    }
+    
+    await deleteDoc(doc(db,  `analysis/${user.uid}/items`, docId));
+  }
 
   useEffect(() => {
     if (!user) {
@@ -52,7 +60,8 @@ export const PlateAnalysisList = () => {
       {plateAnalysisList.map((plateAnalysis) => <PlateAnalysisItem
         key={plateAnalysis.docId}
         analysis={plateAnalysis}
-        onClick={showMore} />)}
+        onClick={showMore}
+        onDelete={deleteItem} />)}
     </Box>
     <PlateAnalysisItemModal
       open={modalOpen}

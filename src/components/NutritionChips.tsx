@@ -33,11 +33,11 @@ const NutritionChips: React.FC<Props> = ({ nutritionInfos, recommend = false }) 
         if (nutritionDiff >=0  && nutritionDiff <5 &&  recommend) {
           return <Chip
             key={index}
-            label={`${Math.abs(nutritionDiff)}% ${nutrient.type}`}
+            label={`${nutrient.type}`}
             sx={{ mr: 0.5, mb: 0.5 }}
             color="success"
             variant="filled"
-            icon={<ThumbUpAltRounded />}
+            icon={<ThumbUpAltRounded fontSize='small' />}
           />
         }
         return (recommend ?
