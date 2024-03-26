@@ -2,7 +2,7 @@ import Box from '@mui/material/Box';
 import React from 'react';
 import { PlateAnalysis } from '../types';
 import Chip, { ChipOwnProps } from '@mui/material/Chip';
-import { ArrowDownwardRounded, ArrowUpwardRounded, CheckCircleOutlineRounded, ErrorOutlineRounded, ThumbUpAltOutlined, ThumbUpAltRounded, ThumbUpSharp } from '@mui/icons-material';
+import { ArrowDownwardRounded, ArrowUpwardRounded, CheckCircleOutlineRounded, ErrorOutlineRounded, ThumbUpAltRounded } from '@mui/icons-material';
 
 interface Props {
   nutritionInfos?: PlateAnalysis['nutrition_info']

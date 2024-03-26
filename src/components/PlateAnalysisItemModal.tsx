@@ -1,19 +1,12 @@
-import React, { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import Button from '@mui/material/Button';
+import { FC, useEffect, useMemo, useRef } from 'react';
 import { styled } from '@mui/material/styles';
 import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
-import DialogActions from '@mui/material/DialogActions';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-import { getStorage, ref, uploadBytes } from "firebase/storage";
 import { PlateAnalysis } from '../types';
-import { Image } from '@mui/icons-material';
-import { Box, Card, CardContent, CardMedia, Chip, LinearProgress, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
+import { Box, Card, CardContent, CardMedia, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
 import NutritionChips from './NutritionChips';
-const storage = getStorage();
-
 
 interface Props {
   open: boolean;

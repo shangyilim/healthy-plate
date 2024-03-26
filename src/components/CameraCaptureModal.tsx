@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
+import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
 import Dialog from '@mui/material/Dialog';
@@ -8,8 +8,8 @@ import DialogActions from '@mui/material/DialogActions';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import { getStorage, ref, uploadBytes } from "firebase/storage";
-const storage = getStorage();
 
+const storage = getStorage();
 
 interface Props {
   onPhotoTaken: (photoRef: string) => void;
@@ -54,7 +54,6 @@ export const CameraCaptureModal: FC<Props> = ({ onPhotoTaken }) => {
     setCameraModalOpen(false);
   }
 
-
   const beginTakePhoto = () => {
     setCameraModalOpen(true);
     setCameraState('capture');
@@ -76,8 +75,8 @@ export const CameraCaptureModal: FC<Props> = ({ onPhotoTaken }) => {
 
   }
 
-  const cancelTakePicture = () =>{
-    if(!canvasContainerRef.current?.firstChild){
+  const cancelTakePicture = () => {
+    if (!canvasContainerRef.current?.firstChild) {
       return;
     }
     canvasContainerRef.current?.removeChild(canvasContainerRef.current.firstChild);
@@ -87,7 +86,10 @@ export const CameraCaptureModal: FC<Props> = ({ onPhotoTaken }) => {
   const startViewFinder = useCallback(async () => {
     try {
 
-
+      // TO-DO: Fallback for unsupported ImageCapture API
+      if(!('ImageCapture' in window)){
+        return;
+      }
 
       const mediaStream = await navigator.mediaDevices.getUserMedia({
         video: true,
@@ -95,7 +97,7 @@ export const CameraCaptureModal: FC<Props> = ({ onPhotoTaken }) => {
 
 
       const track = mediaStream.getVideoTracks()[0];
-      imageCaptureRef.current = new ImageCapture(track);
+      imageCaptureRef.current = new (window as any).ImageCapture(track);
 
       if (!viewfinderRef.current) {
         return;
@@ -109,7 +111,7 @@ export const CameraCaptureModal: FC<Props> = ({ onPhotoTaken }) => {
 
   const analyze = () => {
 
-    if(!blobRef.current){
+    if (!blobRef.current) {
       return;
     }
 
@@ -118,7 +120,7 @@ export const CameraCaptureModal: FC<Props> = ({ onPhotoTaken }) => {
     // 'file' comes from the Blob or File API
     uploadBytes(storageRef, blobRef.current).then((snapshot) => {
       onPhotoTaken(snapshot.ref.toString());
-    
+
     });
   }
 
@@ -164,7 +166,7 @@ export const CameraCaptureModal: FC<Props> = ({ onPhotoTaken }) => {
         </Button>}
         {cameraState === 'preview' && <>
           <Button variant='outlined' onClick={cancelTakePicture}>
-          Cancel
+            Cancel
           </Button>
           <Button variant='contained' autoFocus onClick={analyze}>
             Analyze

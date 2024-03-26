@@ -1,4 +1,4 @@
-import { collection, deleteDoc, doc, getFirestore, limit, onSnapshot, orderBy, query, where } from "firebase/firestore";
+import { collection, deleteDoc, doc, getFirestore, limit, onSnapshot, orderBy, query } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useFirebaseUser } from "../hooks";
 import PlateAnalysisItem from "./PlateAnalysisItem";

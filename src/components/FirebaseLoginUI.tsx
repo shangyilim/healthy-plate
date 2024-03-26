@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import firebaseApp from '../firebase';
-import { UserCredential, getAuth, User } from "firebase/auth";
-import { GoogleAuthProvider, signInWithRedirect, onAuthStateChanged } from 'firebase/auth'
+import React from 'react';
+import { getAuth } from "firebase/auth";
+import { GoogleAuthProvider, signInWithRedirect } from 'firebase/auth'
 import Button from '@mui/material/Button';
 import { useFirebaseUser } from '../hooks';
 
