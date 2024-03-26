@@ -1,6 +1,6 @@
 import './App.css'
 import { FirebaseLoginUI } from './components/FirebaseLoginUI'
-import { Box } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 
 import { addDoc, collection, getFirestore, serverTimestamp } from "firebase/firestore";
 import { useFirebaseUser } from './hooks'
@@ -39,7 +39,10 @@ function App() {
       <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center',flexGrow: 1 }}>
         {/* <CameraCaptureModal
           onPhotoTaken={handlePhotoTaken} /> */}
-        <FileUploadModal onPhotoTaken={handlePhotoTaken}/>
+        {!!user && <FileUploadModal onPhotoTaken={handlePhotoTaken}/>}
+        {!user && <Typography variant="h3">
+                Sign in to continue
+        </Typography>}
       </Box>
 
       <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center',flexGrow: 1 }}>

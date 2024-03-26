@@ -11,16 +11,18 @@ interface Props {
 
 const nutrientColorMap: Record<string, ChipOwnProps['color']> = {
   'carbohydrates': 'primary',
-  'fat': 'secondary',
+  'fat': 'default',
   'vegetables and fruit': 'secondary',
   'protein': 'warning',
 }
 
 const NutritionChips: React.FC<Props> = ({ nutritionInfos, recommend = false }) => {
 
-  const checkNutritionRecommended = (nutrient: PlateAnalysis['nutrition_info'][0]) =>
-    nutrient.percentage >= nutrient.recommended_percentage;
-
+  const checkNutritionRecommended = (nutrient: PlateAnalysis['nutrition_info'][0]) =>{
+    const difference = Math.abs(getNutritionDifference(nutrient));
+    return difference >= 0 && difference <= 5;
+  }
+   
   const getNutritionDifference = (nutrient: PlateAnalysis['nutrition_info'][0]) =>
     nutrient.recommended_percentage - nutrient.percentage;
 
